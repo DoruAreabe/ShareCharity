@@ -3,10 +3,13 @@ package com.doruareabe.share_to_good_hands.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
@@ -20,11 +23,13 @@ public class Donation {
     String sity;
     String street;
     String zipCode;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate pickUpDate;
     LocalTime pickUpTime;
     String pickUpComment;
-    @ManyToOne
-    Category category;
+    @ManyToMany
+    List<Category> categories = new ArrayList<>();
     @ManyToOne
     Institution institution;
+    String phone;
 }
