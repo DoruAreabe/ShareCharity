@@ -35,10 +35,7 @@ public class HomeController {
         for (int i = 0; i < institutions.size(); i += 2) {
             List<Institution> pair = new ArrayList<>();
             pair.add(institutions.get(i));
-            try {
-                pair.add(institutions.get(i + 1));
-            } catch (IndexOutOfBoundsException ignored) {
-            }
+            if((i+1)<institutions.size()) pair.add(institutions.get(i + 1));
             pairs.add(pair);
         }
         model.addAttribute("pairsInstitution", pairs);

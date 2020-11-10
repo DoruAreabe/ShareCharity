@@ -41,12 +41,13 @@
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
 
-                <div th:each="category : ${categories}" class="form-group form-group--checkbox">
+                <div th:each="category : ${categoriesFromServlet}" class="form-group form-group--checkbox">
                     <label>
                         <input class="example"
-                                type="checkbox"
-                                name="categories_id"
+                                th:type="checkbox"
+
                                 th:value="${category.id}"
+                               th:field="*{categories}"
                         />
                         <span class="checkbox"></span>
                         <span th:text="${category.name}" class="description categoryName"></span>
