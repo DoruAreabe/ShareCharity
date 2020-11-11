@@ -6,11 +6,17 @@ import com.doruareabe.share_to_good_hands.entity.User;
 import com.doruareabe.share_to_good_hands.service.DonationService;
 import com.doruareabe.share_to_good_hands.service.InstitutionService;
 import com.doruareabe.share_to_good_hands.service.UserService;
+import com.doruareabe.share_to_good_hands.web.dto.PasswordDto;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +27,13 @@ public class HomeController {
     UserService userService;
     InstitutionService institutionService;
     DonationService donationService;
+    BCryptPasswordEncoder passwordEncoder;
 
-    public HomeController(UserService userService, InstitutionService institutionService, DonationService donationService) {
+    public HomeController(UserService userService, InstitutionService institutionService, DonationService donationService, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.institutionService = institutionService;
         this.donationService = donationService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
@@ -63,8 +71,48 @@ public class HomeController {
         }
     }
 
-//    @GetMapping("details")ad w
-qqqqq
+    @GetMapping("/details")
+    String getLoggedUserDetails(){
+        return "views/userpart/details";
+    }
+
+    @GetMapping("/details/edit")
+    String editLoggedUser(Model model, Principal principal){
+        User user = userService.findUserByEmail(principal.getName());
+        model.addAttribute("user", user);
+        return "views/userpart/edit";
+    }
+    @PostMapping("/details/edit")
+    String EditLoggedUserAction(@Valid User user, BindingResult bindingResult, Principal principal){
+        if(bindingResult.hasErrors()) return "views/userpart/edit";
+        User userLogged = userService.findUserByEmail(principal.getName());
+        userLogged.setName(user.getName());
+        userLogged.setSurname(user.getSurname());
+        userLogged.setEmail(user.getEmail());
+        userService.save(userLogged);
+        return "views/userpart/edit";
+    }
+
+
+
+    @GetMapping("/details/editpass")
+    String editLoggedUserPass(Model model){
+        model.addAttribute("passwordDto", new PasswordDto());
+        return "views/userpart/editpass";
+    }
+
+    @PostMapping("/details/editpass")
+    String editLoggedUserPassAction(@Valid PasswordDto passwordDto, BindingResult bindingResult, Model model, Principal principal){
+        if(bindingResult.hasErrors()) return "views/userpart/editpass";
+        if(!passwordDto.getPass1().equals(passwordDto.getPass2())){
+            model.addAttribute("msg", true);
+            return "views/userpart/editpass";
+        }
+        User user = userService.findUserByEmail(principal.getName());
+        user.setPassword(passwordEncoder.encode(passwordDto.getPass1()));
+        userService.save(user);
+        return "redirect:/details";
+    }
 
 
 }

@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Document</title>
     <link rel="stylesheet" th:href="@{~/css/style.css}"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
 </head>
 <body>
 
@@ -14,35 +18,16 @@
 <!--/header-->
 <section class="login-page">
     <div data-step="5">
-        <h3>Twoje dane:</h3>
-
-        <div class="summary">
-
-
-            <div class="form-section form-section--columns">
-                <div class="form-section--column">
-                    <h4>" "</h4>
-                    <ul>
-                        <li>Imie:</li>
-                        <li>Nazwisko</li>
-                        <li>E-mail:</li>
-                    </ul>
-                </div>
-
-                <div class="form-section--column">
-                    <h4>" "</h4>
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+            <h1>Twoje dane:</h1>
+            <ul class="list-group">
+                <li class="list-group-item">Imie :      <span th:text="${LoggedUser.name}"></span></li>
+                <li class="list-group-item">Nazwisko :  <span th:text="${LoggedUser.surname}"></span></li>
+                <li class="list-group-item">Email :     <span th:text="${LoggedUser.email}"></span></li>
+            </ul>
 
         <div class="form-group form-group--buttons">
-            <a  class="btn">Edytuj dane</a>
-            <a  class="btn">Zmień hasło</a>
+            <a  th:href="@{~/details/edit}" class="btn">Edytuj dane</a>
+            <a  th:href="@{~/details/editpass}" class="btn">Zmień hasło</a>
         </div>
     </div>
 </section>

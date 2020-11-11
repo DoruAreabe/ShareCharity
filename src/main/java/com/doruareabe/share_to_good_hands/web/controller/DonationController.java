@@ -8,8 +8,10 @@ import com.doruareabe.share_to_good_hands.service.InstitutionService;
 import com.doruareabe.share_to_good_hands.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 
@@ -38,7 +40,9 @@ public class DonationController {
     }
 
     @PostMapping
-    String donateFormAction(@ModelAttribute Donation donation) {
+    String donateFormAction(@Valid @ModelAttribute Donation donation, BindingResult bindingResult, Principal principal) {
+        if(bindingResult.hasErrors()) return "views/userpart/donate";
+        donation.setUser(userService.findUserByEmail(principal.getName()));
         donationService.save(donation);
         return "views/userpart/donationConfimation";
     }
