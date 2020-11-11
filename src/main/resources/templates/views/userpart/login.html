@@ -15,12 +15,16 @@
 
 <section class="login-page">
     <h2>Zaloguj się</h2>
-    <form>
-        <div class="form-group">
-            <input type="email" name="email" placeholder="Email" />
+    <form th:action="@{~/login}" method="post">
+        <div th:if="${param.error}">
+            <div class="alert alert-danger">Invalid username or
+                password.</div><br>
         </div>
         <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło" />
+            <input type="email" id="username" name="username" placeholder="Email" />
+        </div>
+        <div class="form-group">
+            <input  id="password" type="password" name="password" placeholder="Hasło" />
             <a href="#" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
         </div>
 
