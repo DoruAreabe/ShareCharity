@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Setter
@@ -19,6 +20,6 @@ public class User {
     @Column(unique = true)
     String email;
     String password;
-    @ManyToOne
-    Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    List<Role> role;
 }

@@ -15,10 +15,13 @@
                     <ul class="dropdown">
                         <li><a href="#">Profil</a></li>
                         <li><a href="#">Moje zbiórki</a></li>
+                        <li th:each="role : ${LoggedUser.role}">
+                            <span th:if="${role.role == 'admin'}"><a th:href="@{~/admin}">Panel administracyjny</a></span>
+                        </li>
                         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Wyloguj się</a></li>
                     </ul>
                 </li>
-                </ul>
+            </ul>
         </div>
 
         <ul>
