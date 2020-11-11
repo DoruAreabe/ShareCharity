@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{~/css/style.css}"/>
+</head>
+<body>
+
+<!--header-->
+<div th:include="parts/userparts/header.html"></div>
+<!--/header-->
+<section class="login-page">
+    <div data-step="5">
+        <h3>Twoje dane:</h3>
+
+        <div class="summary">
+
+
+            <div class="form-section form-section--columns">
+                <div class="form-section--column">
+                    <h4>" "</h4>
+                    <ul>
+                        <li>Imie:</li>
+                        <li>Nazwisko</li>
+                        <li>E-mail:</li>
+                    </ul>
+                </div>
+
+                <div class="form-section--column">
+                    <h4>" "</h4>
+                    <ul>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-group--buttons">
+            <a  class="btn">Edytuj dane</a>
+            <a  class="btn">Zmień hasło</a>
+        </div>
+    </div>
+</section>
+
+<!--footer-->
+<div th:include="parts/userparts/footer.html"></div>
+<!--/footer-->
+</body>
+</html>

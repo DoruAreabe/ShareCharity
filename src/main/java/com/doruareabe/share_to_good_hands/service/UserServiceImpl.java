@@ -30,8 +30,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User saveEditUser(User user) {
+        User userInBase = userRepository.findById(user.getId()).orElse(null);
+        userInBase.setName(user.getName());
+        userInBase.setSurname(user.getSurname());
+        userInBase.setEmail(user.getEmail());
+        if(!user.getPassword().equals("")) userInBase.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(userInBase);
+    }
+
+    @Override
     public User save(User user) {
-        return null;
+        return userRepository.save(user);
     }
 
     @Override
@@ -41,8 +51,9 @@ public class UserServiceImpl implements UserService {
         user.setSurname(userDto.getSurname());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword1()));
+        user.setIsBlocked(false);
         List<Role> roles = new ArrayList<>();
-        roles.add(roleService.findById(1L));
+//        roles.add(roleService.findById(1L));
         roles.add(roleService.findById(2L));
         user.setRole(roles);
         return userRepository.save(user);
@@ -54,14 +65,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User saveAdmin(User user) {
+        user.setIsBlocked(false);
+        List<Role> roles = new ArrayList<>();
+        Role role1 = roleService.findById(1L);
+        Role role2 = roleService.findById(2L);
+        roles.add(role1);
+        roles.add(role2);
+        user.setRole(roles);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User saveDemoteAdmin(User user) {
+        List<Role> roles = new ArrayList<>();
+        Role role = roleService.findById(2L);
+        roles.add(role);
+        user.setRole(roles);
+        return userRepository.save(user);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(s);
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),mapRolesToAuthorities(user.getRole()));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRole()));
     }
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-        return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role.getRole())).collect(Collectors.toList());
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole())).collect(Collectors.toList());
     }
 }

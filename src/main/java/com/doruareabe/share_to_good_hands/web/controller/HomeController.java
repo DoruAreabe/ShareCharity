@@ -63,4 +63,8 @@ public class HomeController {
         }
     }
 
+//    @GetMapping("details")ad w
+qqqqq
+
+
 }

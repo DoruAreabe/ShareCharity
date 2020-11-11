@@ -13,7 +13,7 @@
                 <li class="logged-user">
                     Witaj <span th:text="${LoggedUser.name}"></span>
                     <ul class="dropdown">
-                        <li><a href="#">Profil</a></li>
+                        <li><a th:href="@{~/details}">Profil</a></li>
                         <li><a href="#">Moje zbiórki</a></li>
                         <li th:each="role : ${LoggedUser.role}">
                             <span th:if="${role.role == 'admin'}"><a th:href="@{~/admin}">Panel administracyjny</a></span>
